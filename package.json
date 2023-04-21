@@ -1,8 +1,8 @@
 {
   "name": "ninja-line",
-  "displayName": "NinjaLine",
+  "displayName": "Ninja Line",
   "description": "Ninja focus on the current line",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "vdegenne",
   "repository": {
     "type": "git",
@@ -16,11 +16,12 @@
   ],
   "activationEvents": [],
   "main": "./extension.js",
+  "browser": "./extension.js",
   "contributes": {
     "commands": [
       {
         "command": "ninja-line.toggle",
-        "title": "NinjaLine: toggle"
+        "title": "Ninja Line: toggle"
       }
     ]
   },
