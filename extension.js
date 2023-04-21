@@ -41,7 +41,7 @@ function hideAllLinesButCurrent() {
   let decorations = [];
 
   // Apply the currentLineDecoration to the current line
-  const currentLineRange = editor.document.lineAt(currentLineNumber).range;
+  // const currentLineRange = editor.document.lineAt(currentLineNumber).range;
 
   // Apply the allLinesDecoration to all lines except the current line
   for (let i = 0; i < editor.document.lineCount; i++) {
