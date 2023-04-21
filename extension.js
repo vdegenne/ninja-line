@@ -4,31 +4,6 @@ const allLinesDecoration = vscode.window.createTextEditorDecorationType({
   backgroundColor: 'black',
   color: 'black',
 });
-const highlightFunctionsDecoration =
-  vscode.window.createTextEditorDecorationType({
-    backgroundColor: 'yellow',
-  });
-
-function highlightFunctions() {
-  let editor = vscode.window.activeTextEditor;
-  if (!editor) {
-    return;
-  }
-
-  let document = editor.document;
-  let functions = [];
-
-  for (let i = 0; i < document.lineCount; i++) {
-    let line = document.lineAt(i);
-    let text = line.text.trim();
-
-    if (text.startsWith('function') || text.startsWith('async function')) {
-      functions.push(line.range);
-    }
-  }
-
-  editor.setDecorations(highlightFunctionsDecoration, functions);
-}
 
 function hideAllLinesButCurrent() {
   const editor = vscode.window.activeTextEditor;
@@ -39,9 +14,6 @@ function hideAllLinesButCurrent() {
   const currentLineNumber = editor.selection.active.line;
 
   let decorations = [];
-
-  // Apply the currentLineDecoration to the current line
-  // const currentLineRange = editor.document.lineAt(currentLineNumber).range;
 
   // Apply the allLinesDecoration to all lines except the current line
   for (let i = 0; i < editor.document.lineCount; i++) {
@@ -54,11 +26,7 @@ function hideAllLinesButCurrent() {
     }
   }
 
-  editor.setDecorations(
-    allLinesDecoration,
-    decorations
-    // decorations.filter((d) => !d.range.isEqual(currentLineRange))
-  );
+  editor.setDecorations(allLinesDecoration, decorations);
 }
 
 let changeTextEditorSelectionDisposal;
@@ -82,28 +50,40 @@ function removeAllDecorations() {
 }
 
 let activated = false;
+let occurrencesHighlightOldValue = undefined;
 
 /**
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
+  const config = vscode.workspace.getConfiguration();
+  occurrencesHighlightOldValue = config.get('editor.occurrencesHighlight');
   const disposable = vscode.commands.registerCommand(
     'ninja-line.toggle',
     () => {
       if (!activated) {
         activated = true;
+        config.update(
+          'editor.occurrencesHighlight',
+          false,
+          vscode.ConfigurationTarget.Global
+        );
         hideAllLinesButCurrent();
         changeTextEditorSelectionDisposal =
-          vscode.window.onDidChangeTextEditorSelection((evt) => {
+          vscode.window.onDidChangeTextEditorSelection(() => {
             hideAllLinesButCurrent();
           });
       } else {
         activated = false;
+        config.update(
+          'editor.occurrencesHighlight',
+          occurrencesHighlightOldValue,
+          vscode.ConfigurationTarget.Global
+        );
         if (changeTextEditorSelectionDisposal) {
           changeTextEditorSelectionDisposal.dispose();
         }
         removeAllDecorations();
-        // highlightFunctions();
       }
     }
   );
@@ -111,9 +91,7 @@ function activate(context) {
   context.subscriptions.push(disposable);
 }
 
-function deactivate() {
-  // console.log('deactivation');
-}
+function deactivate() {}
 
 module.exports = {
   activate,

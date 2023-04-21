@@ -2,7 +2,7 @@
   "name": "ninja-line",
   "displayName": "Ninja Line",
   "description": "Ninja focus on the current line",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "vdegenne",
   "repository": {
     "type": "git",
