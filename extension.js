@@ -75,8 +75,8 @@ function removeAllDecorations() {
     //     };
     //   });
 
-		// Applying the same decorator to no range causes the decorations
-		// to be removed from already applied lines
+    // Applying the same decorator to no range causes the decorations
+    // to be removed from already applied lines
     editor.setDecorations(allLinesDecoration, []);
   }
 }
@@ -87,26 +87,28 @@ let activated = false;
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-  const disposable = vscode.commands.registerCommand('line-peep.toggle', () => {
-    if (!activated) {
-      activated = true;
-      hideAllLinesButCurrent();
-      changeTextEditorSelectionDisposal =
-        vscode.window.onDidChangeTextEditorSelection((evt) => {
-          hideAllLinesButCurrent();
-        });
-    } else {
-      activated = false;
-      if (changeTextEditorSelectionDisposal) {
-        changeTextEditorSelectionDisposal.dispose();
+  const disposable = vscode.commands.registerCommand(
+    'ninja-line.toggle',
+    () => {
+      if (!activated) {
+        activated = true;
+        hideAllLinesButCurrent();
+        changeTextEditorSelectionDisposal =
+          vscode.window.onDidChangeTextEditorSelection((evt) => {
+            hideAllLinesButCurrent();
+          });
+      } else {
+        activated = false;
+        if (changeTextEditorSelectionDisposal) {
+          changeTextEditorSelectionDisposal.dispose();
+        }
+        removeAllDecorations();
+        // highlightFunctions();
       }
-      removeAllDecorations();
-      // highlightFunctions();
     }
-  });
+  );
 
   context.subscriptions.push(disposable);
-
 }
 
 function deactivate() {

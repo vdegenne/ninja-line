@@ -1,11 +1,12 @@
 {
-  "name": "line-peep",
-  "displayName": "LinePeep",
+  "name": "ninja-line",
+  "displayName": "NinjaLine",
   "description": "Ninja focus on the current line",
   "version": "0.0.1",
   "publisher": "vdegenne",
   "repository": {
-    
+    "type": "git",
+    "url": "https://github.com/vdegenne/ninja-line"
   },
   "engines": {
     "vscode": "^1.77.0"
@@ -18,8 +19,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "line-peep.toggle",
-        "title": "LinePeep: toggle"
+        "command": "ninja-line.toggle",
+        "title": "NinjaLine: toggle"
       }
     ]
   },
